@@ -65,7 +65,7 @@ const app = new Vue({
     interval: 1,
     timeout: null,
     numbers: [],
-    sequence: ['-', '', '', '', '', '', '', ''],
+    sequence: ['', '', '', '', '', '', '', ''],
     btnStartText: 'Chamada automática'
   },
   methods: {
