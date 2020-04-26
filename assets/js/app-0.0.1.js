@@ -9,17 +9,25 @@ function genPainelMatrix(maxNumber) {
 Vue.component("number-component", {
   props: ["number", "rowIndex", "max"],
   template: `
-    <div class="col p-2 m-1 bg-secondary">
-      <template v-if="number === null || (rowIndex == 10 && number != max)">
+    <template v-if="number === null || (rowIndex == 10 && number != max)">
+      <div class="col p-2 m-1">
+        <h1 class="m-0"></h1>
+      </div>
+    </template>
 
-      </template>
-      <template v-else-if="number === 0">
-        Novo
-      </template>
-      <template v-else="number !== null">
-        {{ number }}
-      </template>
-    </div>
+    <template v-else-if="number === 0">
+      <div class="col p-2 m-1 bg-secondary text-center">
+        <button type="button" class="btn text-white p-0 m-0">
+          <h3 class="m-0">Novo</h3>
+        </button>
+      </div>
+    </template>
+
+    <template v-else="number !== null">
+      <div class="col p-2 m-1 bg-secondary text-center">
+        <h1 class="m-0">{{ number }}</h1>
+      </div>
+    </template>
   `,
 });
 
