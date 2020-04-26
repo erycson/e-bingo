@@ -61,11 +61,11 @@ Vue.component("latest-component", {
 const app = new Vue({
   el: "#app",
   created() {
-    const loadAudio =_.range(1, 91).map(async number => new Promise(resolve => {
-      new Audio(`assets/audio/${number}.wav`).oncanplaythrough = resolve;  
-    }));
-
-    Promise.all(loadAudio);
+    const loadAudio =_.range(1, 91).map(number => done => {
+      new Audio(`assets/audio/${number}.wav?${number}`).oncanplaythrough = () => done();  
+    });
+    
+    async.parallel(loadAudio, 8);
   },
   data: {
     status: 'stopped',
