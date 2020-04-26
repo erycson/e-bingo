@@ -65,7 +65,7 @@ const app = new Vue({
     interval: 1,
     timeout: null,
     numbers: [],
-    sequence: ['', '', '', '', '', '', '', ''],
+    sequence: ['', '', '', '', '', '', '', '', ''],
     btnStartText: 'Chamada automática'
   },
   methods: {
@@ -81,7 +81,7 @@ const app = new Vue({
     start: function () {
       this.clear();
       this.numbers = _.shuffle(_.range(1, this.maxNumber + 1));
-      this.sequence = [];
+      this.sequence = ['', '', '', '', '', '', '', '', ''];
       this.resume();
     },
     resume: function () {
@@ -124,16 +124,10 @@ const app = new Vue({
       $('#current-number').text(number);
       $(`#number-${number}`).removeClass("bg-secondary").addClass("bg-success");
 
-      if (this.sequence.length == 9) {
-        const sequence = this.sequence;
-        sequence.shift();
-        sequence.push(number);
-        this.sequence = sequence; 
-      } else {
-        this.sequence.push(number);
-      }
-
-      console.log(this.sequence);
+      const sequence = this.sequence;
+      sequence.shift();
+      sequence.push(number);
+      this.sequence = sequence; 
     },
     isFinished: function () {
       return !this.numbers.length;
