@@ -60,6 +60,13 @@ Vue.component("latest-component", {
 
 const app = new Vue({
   el: "#app",
+  created() {
+    const loadAudio =_.range(1, 91).map(async number => new Promise(resolve => {
+      new Audio(`assets/audio/${number}.wav`).oncanplaythrough = resolve;  
+    }));
+
+    Promise.all(loadAudio);
+  },
   data: {
     status: 'stopped',
     maxNumber: 90,
