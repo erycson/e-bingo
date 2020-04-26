@@ -82,15 +82,12 @@ const app = new Vue({
     btnStartAutomatic() {
       if (this.status == 'paused') {
         this.resume();
-        this.getNextNumberWithInterval();
       } else if (this.status == 'running' && !this.timeout) {
         this.resume();
-        this.getNextNumberWithInterval();
       } else if (this.status == 'running') {
         this.pause();
       } else if (this.status == 'stopped') {
-        this.init();
-        this.getNextNumberWithInterval();
+        this.start();
       }
     },
     btnStartManual() {
@@ -114,9 +111,15 @@ const app = new Vue({
       this.numbersIndex = 0;
       this.status = 'running';
     },
+    start() {
+      this.init();
+      this.btnText = 'Pausa';
+      this.getNextNumberWithInterval();
+    },
     resume() {
       this.status = 'running';
       this.btnText = 'Pausa';
+      this.getNextNumberWithInterval();
     },
     pause() {
       this.status = 'paused';
