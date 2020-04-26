@@ -34,10 +34,10 @@
               </div>
               <div class="col-9">
               
-                <button type="button" class="btn btn-secondary btn-lg btn-block mb-4 py-5" v-on:click="btnStartAutomatic">
+                <button type="button" class="btn btn-secondary btn-lg btn-block mb-4 py-5" v-on:click="btnStartAutomatic" :disabled="isFinished()">
                   <p class="m-0" style="font-size: 2rem">{{ btnText }}</p>
                 </button>
-                <button type="button" class="btn btn-secondary btn-lg btn-block my-4 py-5" v-on:click="btnStartManual">
+                <button type="button" class="btn btn-secondary btn-lg btn-block my-4 py-5" v-on:click="btnStartManual" :disabled="isFinished()">
                   <p class="m-0" style="font-size: 2rem">Próxima pedra</p>
                 </button>
                 <div class="bg-white p-2 rounded">

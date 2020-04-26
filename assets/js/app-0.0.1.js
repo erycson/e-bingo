@@ -72,78 +72,91 @@ const app = new Vue({
     btnText: 'Chamada automática'
   },
   methods: {
-    btnChangeMax: function() {
+    /* -------------------------------------------------------------------------- */
+    /*                                  Eventos                                   */
+    /* -------------------------------------------------------------------------- */
+
+    btnChangeMax() {
       this.nextMaxNumber = this.nextMaxNumber == 90 ? 75 : 90;
     },
-    btnStartAutomatic: function () {
+    btnStartAutomatic() {
       if (this.status == 'paused') {
         this.resume();
+        this.getNextNumberWithInterval();
       } else if (this.status == 'running' && !this.timeout) {
         this.resume();
+        this.getNextNumberWithInterval();
       } else if (this.status == 'running') {
         this.pause();
       } else if (this.status == 'stopped') {
-        this.start();
+        this.init();
+        this.getNextNumberWithInterval();
       }
     },
-    btnStartManual: function() {
-      if (this.numbers === null) {
+    btnStartManual() {
+      if (!this.isStarted()) {
         this.init();
-        this.status = 'running';
       }
-      console.log(this.timeout);
       if (this.timeout !== null) {
         this.pause();
       }
 
       this.getNextNumber();
     },
-    init: function() {
+
+    /* -------------------------------------------------------------------------- */
+    /*                              Métodos de Estado                             */
+    /* -------------------------------------------------------------------------- */
+
+    init() {
       this.clear();
       this.numbers = _.shuffle(_.range(1, this.maxNumber + 1));
       this.numbersIndex = 0;
+      this.status = 'running';
     },
-    start: function () {
-      this.init();
-      this.resume();
-    },
-    resume: function () {
+    resume() {
       this.status = 'running';
       this.btnText = 'Pausa';
-      this.getNextNumberWithInterval();
     },
-    pause: function () {
+    pause() {
       this.status = 'paused';
       this.btnText = 'Continuar chamada automática';
       clearTimeout(this.timeout);
       this.timeout = null;
     },
-    stop: function () {
-      this.running = 'stopped';
+    stop() {
       this.btnText = 'Chamada automática';
+      this.status = 'stopped';
       this.numbers = null;
       this.numbersIndex = null;
       clearTimeout(this.timeout);
       this.timeout = null;
     },
-    clear: function() {
+    clear() {
       this.sequence = ['', '', '', '', '', '', '', '', ''];
       $('#current-number').text('');
       $(".number.bg-success")
         .removeClass("bg-success")
         .addClass("bg-secondary");
     },
-    getNextNumberWithInterval: function() {
-      this.timeout = setTimeout(() => {
-        if (this.isFinished()) {
-          return;
-        }
+    finish() {
+      this.btnText = 'Terminou';
+      this.status = 'finished';
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    },
 
+    /* -------------------------------------------------------------------------- */
+    /*                                   Métodos                                  */
+    /* -------------------------------------------------------------------------- */
+
+    getNextNumberWithInterval() {
+      this.timeout = setTimeout(() => {
         this.getNextNumber();
         this.getNextNumberWithInterval();
       }, this.interval * 1000);
     },
-    getNextNumber: function () {
+    getNextNumber() {
       if (this.isFinished()) {
         return;
       }
@@ -151,13 +164,12 @@ const app = new Vue({
       const number = this.nextNumber();
       this.handleNextNumber(number);
 
-      if (!this.hasNextNumber()) {
-        this.stop();
-        this.btnText = 'Terminou';
+      if (!this.hasNumber()) {
+        this.finish();
         return;
       }
     },
-    handleNextNumber: function (number) {
+    handleNextNumber(number) {
       $('#current-number').text(number);
       $(`#number-${number}`).removeClass("bg-secondary").addClass("bg-success");
 
@@ -166,13 +178,16 @@ const app = new Vue({
       sequence.push(number);
       this.sequence = sequence; 
     },
-    isFinished: function () {
-      return this.numbers === null;
+    isFinished() {
+      return this.status === 'finished';
     },
-    hasNextNumber: function () {
+    isStarted() {
+      return this.status !== 'stopped';
+    },
+    hasNumber() {
       return this.numbersIndex < this.numbers.length;
     },
-    nextNumber: function () {
+    nextNumber() {
       return this.numbers[this.numbersIndex++];
     },
   },
