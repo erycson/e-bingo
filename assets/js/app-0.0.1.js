@@ -78,10 +78,12 @@ const app = new Vue({
         this.start();
       }
     },
-    start: function () {
+    init: function() {
       this.clear();
       this.numbers = _.shuffle(_.range(1, this.maxNumber + 1));
-      this.sequence = ['', '', '', '', '', '', '', '', ''];
+    },
+    start: function () {
+      this.init();
       this.resume();
     },
     resume: function () {
@@ -100,6 +102,7 @@ const app = new Vue({
       clearTimeout(this.timeout);
     },
     clear: function() {
+      this.sequence = ['', '', '', '', '', '', '', '', ''];
       $('#current-number').text('--');
       $(".number.bg-success")
         .removeClass("bg-success")
@@ -107,13 +110,24 @@ const app = new Vue({
     },
     getNextNumberWithInterval: function() {
       this.timeout = setTimeout(() => {
+        if (this.isFinished()) {
+          this.stop();
+          this.btnStartText = 'Terminou';
+          return;
+        }
+
         this.getNextNumber();
         this.getNextNumberWithInterval();
       }, this.interval * 1000);
     },
     getNextNumber: function () {
+      if (this.status == 'stopped') {
+        this.init();
+        this.status = 'running';
+      }
       if (this.isFinished()) {
         this.stop();
+        this.btnStartText = 'Terminou';
         return;
       }
 
