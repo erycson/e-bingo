@@ -65,6 +65,7 @@ const app = new Vue({
     interval: 1,
     timeout: null,
     numbers: [],
+    numbersIndex: null,
     sequence: ['', '', '', '', '', '', '', '', ''],
     btnStartText: 'Chamada automática'
   },
@@ -81,6 +82,7 @@ const app = new Vue({
     init: function() {
       this.clear();
       this.numbers = _.shuffle(_.range(1, this.maxNumber + 1));
+      this.numbersIndex = 0;
     },
     start: function () {
       this.init();
@@ -100,6 +102,7 @@ const app = new Vue({
       this.running = 'stopped';
       this.btnStartText = 'Chamada automática';
       this.numbers = null;
+      this.numbersIndex = null;
       clearTimeout(this.timeout);
     },
     clear: function() {
@@ -112,8 +115,6 @@ const app = new Vue({
     getNextNumberWithInterval: function() {
       this.timeout = setTimeout(() => {
         if (this.isFinished()) {
-          this.stop();
-          this.btnStartText = 'Terminou';
           return;
         }
 
@@ -131,7 +132,6 @@ const app = new Vue({
       }
 
       const number = this.nextNumber();
-      if (!number) return;
       this.onNextNumber(number);
 
       if (!this.hasNextNumber()) {
@@ -153,11 +153,10 @@ const app = new Vue({
       return this.numbers === null;
     },
     hasNextNumber: function () {
-      return !!this.numbers.length;
+      return this.numbersIndex < this.numbers.length;
     },
     nextNumber: function () {
-      const index = _.random(0, this.numbers.length);
-      return this.numbers.splice(index, 1)[0];
+      return this.numbers[this.numbersIndex++];
     },
   },
 });
