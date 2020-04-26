@@ -50,8 +50,8 @@ Vue.component("latest-component", {
   props: ["numbers"],
   template: `
     <div class="row">
-      <div class="col px-0 m-1 bg-white text-center text-danger" v-for="number in numbers" :key="number">
-        <h1 class="m-0 height: 3.2rem">{{ number }}</h1>
+      <div class="col px-0 m-1 bg-white text-center text-danger" v-for="number in numbers" :key="'last-' + number">
+        <h1 class="m-0" style="height: 3.2rem">{{ number }}</h1>
       </div>
     </div>
   `,
