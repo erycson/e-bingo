@@ -21,35 +21,7 @@
             <h3 class="text-warning">Últimas pedras chamadas</h3>
             <div class="col p-3">
 
-              <div class="row">
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-                <div class="col px-0 m-1 bg-white text-center text-danger">
-                  <h1 class="m-0">67</h1>
-                </div>
-              </div>
+              <latest-component v-bind:numbers="sequence"/>
             </div>
           </div>
         </div>
@@ -58,13 +30,13 @@
             <div class="row">
               <div class="col-3 py-3 text-center">
                 <h5>Pausa (s)</h5>
-                <input type="number" name="intervalo" value="5" min="1" max="50">
+                <input type="number" v-model="interval" value="1" min="1" max="50">
               </div>
               <div class="col-9">
-                <button type="button" class="btn btn-secondary btn-lg btn-block mb-3 p-4" v-on:click="start">Chamada automática</button>
-                <button type="button" class="btn btn-secondary btn-lg btn-block my-3 p-4">Próxima pedra</button>
+                <button type="button" class="btn btn-secondary btn-lg btn-block mb-3 p-4" v-on:click="btnStartClick">{{ btnStartText }}</button>
+                <button type="button" class="btn btn-secondary btn-lg btn-block my-3 p-4" v-on:click="getNextNumber">Próxima pedra</button>
                 <div class="bg-white p-2 rounded">
-                  <h1 class=" text-danger text-center  display-1" style="font-size: 13rem">70</h1>
+                  <h1 class=" text-danger text-center display-1" style="font-size: 13rem" id="current-number">--</h1>
                 </div>
                 <div class="container my-3">
                   <div class="row">
@@ -72,7 +44,7 @@
                       <h3>Faltam</h3>
                     </div>
                     <div class="col">
-                      <h1 class="text-warning text-center">17</h1>
+                      <h1 class="text-warning text-center">{{ numbers.length }}</h1>
                     </div>
                     <div class="col">
                       <h3>pedras</h3>
@@ -83,8 +55,7 @@
                   <input type="checkbox" aria-label="Checkbox for following text input">
                   Só 75 pedras no próximo
                 </div>
-                <button type="button" class="btn btn-secondary text-right btn-lg mt-3 p-2 px-4  "
-                  style="float: right;">Sair</button>
+                <button type="button" class="btn btn-secondary text-right btn-lg mt-3 p-2 px-4" style="float: right;">Sair</button>
               </div>
             </div>
           </div>
