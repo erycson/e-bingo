@@ -14,12 +14,12 @@
     <div class="bg-dark p-3 text-white">
       <div class="row">
         <div class="col-8 container">
-          <div class="container">
+          <div>
             <painel-component v-bind:max="maxNumber"/>
           </div>
           <div>
             <h3 class="text-warning">Últimas pedras chamadas</h3>
-            <div class="container">
+            <div class="col p-3">
 
               <div class="row">
                 <div class="col px-0 m-1 bg-white text-center text-danger">
@@ -61,10 +61,8 @@
                 <input type="number" name="intervalo" value="5" min="1" max="50">
               </div>
               <div class="col-9">
-                <button type="button" class="btn btn-secondary btn-lg btn-block mb-3 p-4  ">Chamada
-                  automática</button>
-                <button type="button" class="btn btn-secondary btn-lg btn-block my-3 p-4   ">Próxima
-                  pedra</button>
+                <button type="button" class="btn btn-secondary btn-lg btn-block mb-3 p-4" v-on:click="start">Chamada automática</button>
+                <button type="button" class="btn btn-secondary btn-lg btn-block my-3 p-4">Próxima pedra</button>
                 <div class="bg-white p-2 rounded">
                   <h1 class=" text-danger text-center  display-1" style="font-size: 13rem">70</h1>
                 </div>
@@ -93,8 +91,6 @@
         </div>
       </div>
     </div>
-
-  </div>
   </div>
   <script src="assets/js/jquery-3.4.1.slim.min.js"></script>
   <script src="assets/js/bootstrap-4.4.1.min.js"></script>
