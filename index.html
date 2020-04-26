@@ -34,11 +34,11 @@
               </div>
               <div class="col-9">
               
-                <button type="button" class="btn btn-secondary btn-lg btn-block mb-4 py-5"v-on:click="btnStartClick">
-                  <p class="m-0" style="font-size: 2rem">{{ btnStartText }}</p>
+                <button type="button" class="btn btn-secondary btn-lg btn-block mb-4 py-5" v-on:click="btnStartAutomatic">
+                  <p class="m-0" style="font-size: 2rem">{{ btnText }}</p>
                 </button>
-                <button type="button" class="btn btn-secondary btn-lg btn-block my-4 py-5">
-                  <p class="m-0" style="font-size: 2rem" v-on:click="getNextNumber">Próxima pedra</p>
+                <button type="button" class="btn btn-secondary btn-lg btn-block my-4 py-5" v-on:click="btnStartManual">
+                  <p class="m-0" style="font-size: 2rem">Próxima pedra</p>
                 </button>
                 <div class="bg-white p-2 rounded">
                   <h1 class=" text-danger text-center display-1" style="height: 22rem; font-size: 20rem; line-height: 20rem"  id="current-number"></h1>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="px-3">
                   <div class="input-group">
-                    <input type="checkbox" aria-label="Checkbox for following text input" style="margin-top: 0.4rem; zoom:1.4">
+                    <input type="checkbox" aria-label="Checkbox for following text input" style="margin-top: 0.4rem; zoom:1.4" v-on:change="btnChangeMax">
                     <p class="m-0 px-2" style="font-size: 1.5rem; line-height: 2rem">Só 75 pedras no próximo</p>
                   </div>
                 </div>
