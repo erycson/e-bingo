@@ -99,6 +99,7 @@ const app = new Vue({
     stop: function () {
       this.running = 'stopped';
       this.btnStartText = 'Chamada automática';
+      this.numbers = null;
       clearTimeout(this.timeout);
     },
     clear: function() {
@@ -126,13 +127,18 @@ const app = new Vue({
         this.status = 'running';
       }
       if (this.isFinished()) {
-        this.stop();
-        this.btnStartText = 'Terminou';
         return;
       }
 
       const number = this.nextNumber();
+      if (!number) return;
       this.onNextNumber(number);
+
+      if (!this.hasNextNumber()) {
+        this.stop();
+        this.btnStartText = 'Terminou';
+        return;
+      }
     },
     onNextNumber(number) {
       $('#current-number').text(number);
@@ -144,7 +150,10 @@ const app = new Vue({
       this.sequence = sequence; 
     },
     isFinished: function () {
-      return !this.numbers.length;
+      return this.numbers === null;
+    },
+    hasNextNumber: function () {
+      return !!this.numbers.length;
     },
     nextNumber: function () {
       const index = _.random(0, this.numbers.length);
