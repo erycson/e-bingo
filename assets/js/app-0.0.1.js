@@ -1,15 +1,7 @@
-function genPainelMatrix(maxNumber) {
-  return _.range(0, 10).map((col) => {
-    return _.range(0, 10)
-      .map((row) => col * 10 + row)
-      .map((i) => (i > maxNumber ? null : i));
-  });
-}
-
 Vue.component("number-component", {
   props: ["number", "rowIndex", "max"],
   template: `
-    <template v-if="number === null || (rowIndex == 10 && number != max)">
+    <template v-if="number > max || (rowIndex == 10 && number != max)">
       <div class="col p-2 m-1">
         <h1 class="m-0"></h1>
       </div>
@@ -44,7 +36,7 @@ Vue.component("painel-component", {
   props: ["max"],
   template: `
     <div class="col p-3 container">
-      <column-component v-for="(row, i) in max / 10 + 2" :row="row - 1" :rowIndex="i" :max="max"/>
+      <column-component v-for="(row, i) in Math.round(max / 10 + 2)" :row="row - 1" :rowIndex="i" :max="max"/>
     </div>
   `,
 });
@@ -53,7 +45,6 @@ const app = new Vue({
   el: "#app",
   data: {
     maxNumber: 90,
-    painelNumbers: genPainelMatrix(90),
     interval: 1000,
     timeout: null,
     numbers: [],
