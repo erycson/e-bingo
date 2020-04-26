@@ -65,7 +65,7 @@ const app = new Vue({
       new Audio(`assets/audio/${number}.wav?${number}`).oncanplaythrough = () => done();  
     });
     
-    async.parallel(loadAudio, 8);
+    async.parallelLimit(loadAudio, 10);
   },
   data: {
     status: 'stopped',
