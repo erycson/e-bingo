@@ -154,32 +154,39 @@ const app = new Vue({
     /* -------------------------------------------------------------------------- */
 
     getNextNumberWithInterval() {
-      this.timeout = setTimeout(() => {
-        this.getNextNumber();
+      this.timeout = setTimeout(async () => {
+        await this.getNextNumber();
         this.getNextNumberWithInterval();
       }, this.interval * 1000);
     },
-    getNextNumber() {
+    async getNextNumber() {
       if (this.isFinished()) {
         return;
       }
 
       const number = this.nextNumber();
-      this.handleNextNumber(number);
+      await this.handleNextNumber(number);
 
       if (!this.hasNumber()) {
         this.finish();
         return;
       }
     },
-    handleNextNumber(number) {
+    async handleNextNumber(number) {
       $('#current-number').text(number);
       $(`#number-${number}`).removeClass("bg-secondary").addClass("bg-success");
+
 
       const sequence = this.sequence;
       sequence.shift();
       sequence.push(number);
-      this.sequence = sequence; 
+      this.sequence = sequence;
+
+      return new Promise(resolve => {
+        const audio = new Audio(`assets/audio/${number}.wav`);
+        audio.onended = resolve;
+        audio.play();
+      });
     },
     isFinished() {
       return this.status === 'finished';
