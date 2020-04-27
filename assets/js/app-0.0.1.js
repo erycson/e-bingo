@@ -1,8 +1,7 @@
-
 function startBingo() {
   app.stop();
   app.clear();
-  Vue.set(app, 'maxNumber', app.nextMaxNumber);
+  Vue.set(app, "maxNumber", app.nextMaxNumber);
 }
 
 Vue.component("number-component", {
@@ -62,15 +61,15 @@ Vue.component("latest-component", {
 const app = new Vue({
   el: "#app",
   data: {
-    status: 'stopped',
+    status: "stopped",
     maxNumber: 90,
     nextMaxNumber: 90,
     interval: 1,
     timeout: null,
     numbers: null,
     numbersIndex: null,
-    sequence: ['', '', '', '', '', '', '', '', ''],
-    btnText: 'Chamada automática'
+    sequence: ["", "", "", "", "", "", "", "", ""],
+    btnText: "Chamada automática",
   },
   methods: {
     /* -------------------------------------------------------------------------- */
@@ -81,13 +80,13 @@ const app = new Vue({
       this.nextMaxNumber = this.nextMaxNumber == 90 ? 75 : 90;
     },
     btnStartAutomatic() {
-      if (this.status == 'paused') {
+      if (this.status == "paused") {
         this.resume();
-      } else if (this.status == 'running' && !this.timeout) {
+      } else if (this.status == "running" && !this.timeout) {
         this.resume();
-      } else if (this.status == 'running') {
+      } else if (this.status == "running") {
         this.pause();
-      } else if (this.status == 'stopped') {
+      } else if (this.status == "stopped") {
         this.start();
       }
     },
@@ -110,42 +109,42 @@ const app = new Vue({
       this.clear();
       this.numbers = _.shuffle(_.range(1, this.maxNumber + 1));
       this.numbersIndex = 0;
-      this.status = 'running';
+      this.status = "running";
     },
     start() {
       this.init();
-      this.btnText = 'Pausa';
+      this.btnText = "Pausa";
       this.getNextNumberWithInterval();
     },
     resume() {
-      this.status = 'running';
-      this.btnText = 'Pausa';
+      this.status = "running";
+      this.btnText = "Pausa";
       this.getNextNumberWithInterval();
     },
     pause() {
-      this.status = 'paused';
-      this.btnText = 'Continuar chamada automática';
+      this.status = "paused";
+      this.btnText = "Continuar chamada automática";
       clearTimeout(this.timeout);
       this.timeout = null;
     },
     stop() {
-      this.btnText = 'Chamada automática';
-      this.status = 'stopped';
+      this.btnText = "Chamada automática";
+      this.status = "stopped";
       this.numbers = null;
       this.numbersIndex = null;
       clearTimeout(this.timeout);
       this.timeout = null;
     },
     clear() {
-      this.sequence = ['', '', '', '', '', '', '', '', ''];
-      $('#current-number').text('');
+      this.sequence = ["", "", "", "", "", "", "", "", ""];
+      $("#current-number").text("");
       $(".number.bg-success")
         .removeClass("bg-success")
         .addClass("bg-secondary");
     },
     finish() {
-      this.btnText = 'Terminou';
-      this.status = 'finished';
+      this.btnText = "Terminou";
+      this.status = "finished";
       clearTimeout(this.timeout);
       this.timeout = null;
     },
@@ -174,26 +173,25 @@ const app = new Vue({
       }
     },
     async handleNextNumber(number) {
-      $('#current-number').text(number);
+      $("#current-number").text(number);
       $(`#number-${number}`).removeClass("bg-secondary").addClass("bg-success");
-
 
       const sequence = this.sequence;
       sequence.shift();
       sequence.push(number);
       this.sequence = sequence;
 
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         const audio = new Audio(`assets/audio/${number}.wav`);
         audio.onended = resolve;
         audio.play();
       });
     },
     isFinished() {
-      return this.status === 'finished';
+      return this.status === "finished";
     },
     isStarted() {
-      return this.status !== 'stopped';
+      return this.status !== "stopped";
     },
     hasNumber() {
       return this.numbersIndex < this.numbers.length;
