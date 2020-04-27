@@ -1,3 +1,4 @@
+
 function startBingo() {
   app.stop();
   app.clear();
@@ -60,13 +61,6 @@ Vue.component("latest-component", {
 
 const app = new Vue({
   el: "#app",
-  created() {
-    const loadAudio =_.range(1, 91).map(number => done => {
-      new Audio(`assets/audio/${number}.wav?${number}`).oncanplaythrough = () => done();  
-    });
-    
-    async.parallelLimit(loadAudio, 10);
-  },
   data: {
     status: 'stopped',
     maxNumber: 90,
