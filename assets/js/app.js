@@ -14,7 +14,7 @@ Vue.component("number-component", {
     </template>
 
     <template v-else-if="number === 0">
-      <div class="col bg-secondary text-center" style="height: 6.7vh; margin: .3vmin; padding: 0">
+      <div class="col bg-secondary text-center" style="height: 6.5vh; margin: .3vmin; padding: 0">
         <button type="button" class="btn text-white p-0 m-0" style="width: 100%; height: 100%;" v-on:click="startBingo">
           <h3 class="m-0" style="font-size: 3vmin">Novo</h3>
         </button>
@@ -22,7 +22,7 @@ Vue.component("number-component", {
     </template>
 
     <template v-else="number !== null">
-      <div :id="'number-' + number" class="col bg-secondary text-center number" style="height: 6.7vh; width: 5vw; margin: .3vmin; padding: 0">
+      <div :id="'number-' + number" class="col bg-secondary text-center number" style="height: 6.5vh; width: 5vw; margin: .3vmin; padding: 0">
         <span class="m-0" style="font-size: 4vmin; padding: .8vmin 0">{{ number }}</span>
       </div>
     </template>
@@ -52,7 +52,7 @@ Vue.component("latest-component", {
   template: `
     <div class="row">
       <div class="col bg-white text-center text-danger" style="height: 6.7vh; margin: .3vmin; padding: 0" v-for="number in numbers" :key="'last-' + number">
-        <span class="m-0" style="font-size: 4vmin; padding: .8vmin 0">{{ number }}</span>
+        <span class="m-0 font-weight-bold" style="font-size: 4vmin; padding: .8vmin 0">{{ number }}</span>
       </div>
     </div>
   `,
