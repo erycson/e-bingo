@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js');
 
-const BUILD = '2020-04-29 00:48';
+const BUILD = '2020-04-29 14:52';
 
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
@@ -8,13 +8,13 @@ if (workbox) {
   workbox.precaching.precacheAndRoute([
     {url: 'index.html', revision: BUILD },
     {url: 'assets/css/bootstrap-4.4.1.min.css', revision: BUILD },
-    {url: 'assets/css/app-0.0.1.css', revision: BUILD },
+    {url: 'assets/css/app.css', revision: BUILD },
     {url: 'assets/js/jquery-3.4.1.slim.min.js', revision: BUILD },
     {url: 'assets/js/bootstrap-4.4.1.min.js', revision: BUILD },
     {url: 'assets/js/vue-2.6.11.js', revision: BUILD },
     {url: 'assets/js/underscore-1.10.2.min.js', revision: BUILD },
     {url: 'assets/js/async-3.2.0.min.js', revision: BUILD },
-    {url: 'assets/js/app-0.0.1.js', revision: BUILD },
+    {url: 'assets/js/app.js', revision: BUILD },
     {url: 'assets/audio/1.wav', revision: BUILD },
     {url: 'assets/audio/2.wav', revision: BUILD },
     {url: 'assets/audio/3.wav', revision: BUILD },
