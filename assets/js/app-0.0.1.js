@@ -154,6 +154,10 @@ const app = new Vue({
     /* -------------------------------------------------------------------------- */
 
     getNextNumberWithInterval() {
+      if (this.status !== "running") {
+        return;
+      }
+
       this.timeout = setTimeout(async () => {
         await this.getNextNumber();
         this.getNextNumberWithInterval();

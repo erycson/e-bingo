@@ -1,52 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" manifest="app.appcache">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <script>
-      // if ('serviceWorker' in navigator) {
-      //   navigator.serviceWorker.register('assets/js/sw.js');
-      // }
-    </script>
     <link rel="stylesheet" href="assets/css/bootstrap-4.4.1.min.css" />
     <link rel="stylesheet" href="assets/css/app-0.0.1.css" />
     <title>E-Bingo 0.0.1</title>
     <script>
-      var appCache = window.applicationCache;
-
-      function onUpdateReady() {
-        if (appCache.status == appCache.UPDATEREADY) {
-          appCache.swapCache();
-          if (confirm("Nova versão encontrada, deseja atualizar?")) {
-            window.location.reload();
-          }
-        }
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js')
+            .then(registration => {
+              console.log(`Service Worker registered! Scope: ${registration.scope}`);
+            })
+            .catch(err => {
+              console.log(`Service Worker registration failed: ${err}`);
+            });
+        });
       }
-
-      function onPageLoad() {
-        appCache.addEventListener("updateready", onUpdateReady, false);
-        
-        appCache.addEventListener("downloading", e => {
-          $('#loading').modal('show');
-        }, false);
-
-        appCache.addEventListener("cached", e => {
-          setTimeout(() => $('#loading').modal('hide'), 1000);
-        }, false);
-
-        appCache.addEventListener("progress", e => {
-          const progress = (e.loaded / e.total * 100).toFixed(0);
-          $('#loading-progress')
-            .css({width: `${progress}%`})
-            .text(`${progress}%`);
-        }, false);
-      }
-
-      // Check if a new cache is available on page load.
-      window.addEventListener("load", onPageLoad, false);
     </script>
   </head>
 
