@@ -82,8 +82,6 @@ const app = new Vue({
     btnStartAutomatic() {
       if (this.status == "paused") {
         this.resume();
-      } else if (this.status == "running" && !this.timeout) {
-        this.resume();
       } else if (this.status == "running") {
         this.pause();
       } else if (this.status == "stopped") {
@@ -94,7 +92,7 @@ const app = new Vue({
       if (!this.isStarted()) {
         this.init();
       }
-      if (this.timeout !== null) {
+      if (this.isStarted()) {
         this.pause();
       }
 
@@ -153,15 +151,17 @@ const app = new Vue({
     /*                                   Métodos                                  */
     /* -------------------------------------------------------------------------- */
 
-    getNextNumberWithInterval() {
-      if (this.status !== "running") {
-        return;
+    async getNextNumberWithInterval() {
+      while (this.hasNumber() && this.status === "running") {
+        await this.getNextNumber();
+        await new Promise((resolve) =>
+          setTimeout(resolve, this.interval * 1000)
+        );
       }
 
-      this.timeout = setTimeout(async () => {
-        await this.getNextNumber();
-        this.getNextNumberWithInterval();
-      }, this.interval * 1000);
+      if (!this.hasNumber()) {
+        this.finish();
+      }
     },
     async getNextNumber() {
       if (this.isFinished()) {
@@ -170,11 +170,6 @@ const app = new Vue({
 
       const number = this.nextNumber();
       await this.handleNextNumber(number);
-
-      if (!this.hasNumber()) {
-        this.finish();
-        return;
-      }
     },
     async handleNextNumber(number) {
       $("#current-number").text(number);

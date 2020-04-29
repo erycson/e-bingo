@@ -1,6 +1,6 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox-sw.js');
 
-const BUILD = '2020-04-28 23:18';
+const BUILD = '2020-04-29 00:35';
 
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
