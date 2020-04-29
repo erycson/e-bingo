@@ -8,22 +8,22 @@ Vue.component("number-component", {
   props: ["number", "rowIndex", "max"],
   template: `
     <template v-if="number > max || (rowIndex == 10 && number != max)">
-      <div class="col p-1 m-1">
-        <h1 class="m-0"></h1>
+      <div class="col" style=" margin: .3vmin; padding: 0">
+        <span class="m-0"></span>
       </div>
     </template>
 
     <template v-else-if="number === 0">
-      <div class="col p-1 m-1 bg-secondary text-center">
-        <button type="button" class="btn text-white p-0 m-0" v-on:click="startBingo">
-          <h3 class="m-0">Novo</h3>
+      <div class="col bg-secondary text-center" style="height: 6.9vh; margin: .3vmin; padding: 0">
+        <button type="button" class="btn text-white p-0 m-0" style="width: 100%; height: 100%;" v-on:click="startBingo">
+          <h3 class="m-0" style="font-size: 3vmin">Novo</h3>
         </button>
       </div>
     </template>
 
     <template v-else="number !== null">
-      <div :id="'number-' + number" class="col p-1 m-1 bg-secondary text-center number">
-        <h1 class="m-0">{{ number }}</h1>
+      <div :id="'number-' + number" class="col bg-secondary text-center number" style="height: 6.9vh; width: 5vw; margin: .3vmin; padding: 0">
+        <span class="m-0" style="font-size: 4vmin; padding: .8vmin 0">{{ number }}</span>
       </div>
     </template>
   `,
@@ -32,7 +32,7 @@ Vue.component("number-component", {
 Vue.component("column-component", {
   props: ["row", "rowIndex", "max"],
   template: `
-    <div class="row">
+    <div class="row" >
       <number-component v-for="col in 9" :number="row + ((col - 1) * 10)" :rowIndex="rowIndex" :max="max"/>
     </div>
   `,
@@ -51,8 +51,8 @@ Vue.component("latest-component", {
   props: ["numbers"],
   template: `
     <div class="row">
-      <div class="col px-0 m-1 bg-white text-center text-danger" v-for="number in numbers" :key="'last-' + number">
-        <h1 class="m-0" style="height: 3.2rem">{{ number }}</h1>
+      <div class="col bg-white text-center text-danger" style="height: 6.9vh; margin: .3vmin; padding: 0" v-for="number in numbers" :key="'last-' + number">
+        <span class="m-0" style="font-size: 4vmin; padding: .8vmin 0">{{ number }}</span>
       </div>
     </div>
   `,

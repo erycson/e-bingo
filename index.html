@@ -1,184 +1,112 @@
 <!DOCTYPE html>
 <html lang="en" manifest="app.appcache">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <script>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <script>
       // if ('serviceWorker' in navigator) {
       //   navigator.serviceWorker.register('assets/js/sw.js');
       // }
-    </script>
-    <link rel="stylesheet" href="assets/css/bootstrap-4.4.1.min.css" />
-    <link rel="stylesheet" href="assets/css/app-0.0.1.css" />
-    <title>E-Bingo 0.0.1</title>
-    <script>
-      var appCache = window.applicationCache;
+  </script>
+  <link rel="stylesheet" href="assets/css/bootstrap-4.4.1.min.css" />
+  <link rel="stylesheet" href="assets/css/app-0.0.1.css" />
+  <title>E-Bingo 0.0.1</title>
+  <script>
+    var appCache = window.applicationCache;
 
-      function onUpdateReady() {
-        if (appCache.status == appCache.UPDATEREADY) {
-          appCache.swapCache();
-          if (confirm("Nova versão encontrada, deseja atualizar?")) {
-            window.location.reload();
-          }
+    function onUpdateReady() {
+      if (appCache.status == appCache.UPDATEREADY) {
+        appCache.swapCache();
+        if (confirm("Nova versão encontrada, deseja atualizar?")) {
+          window.location.reload();
         }
       }
+    }
 
-      function onPageLoad() {
-        appCache.addEventListener("updateready", onUpdateReady, false);
-        
-        appCache.addEventListener("downloading", e => {
-          $('#loading').modal('show');
-        }, false);
+    function onPageLoad() {
+      appCache.addEventListener("updateready", onUpdateReady, false);
 
-        appCache.addEventListener("cached", e => {
-          setTimeout(() => $('#loading').modal('hide'), 1000);
-        }, false);
+      appCache.addEventListener("downloading", e => {
+        $('#loading').modal('show');
+      }, false);
 
-        appCache.addEventListener("progress", e => {
-          const progress = (e.loaded / e.total * 100).toFixed(0);
-          $('#loading-progress')
-            .css({width: `${progress}%`})
-            .text(`${progress}%`);
-        }, false);
-      }
+      appCache.addEventListener("cached", e => {
+        setTimeout(() => $('#loading').modal('hide'), 1000);
+      }, false);
 
-      // Check if a new cache is available on page load.
-      window.addEventListener("load", onPageLoad, false);
-    </script>
-  </head>
+      appCache.addEventListener("progress", e => {
+        const progress = (e.loaded / e.total * 100).toFixed(0);
+        $('#loading-progress')
+          .css({ width: `${progress}%` })
+          .text(`${progress}%`);
+      }, false);
+    }
 
-  <body class="bg-dark">
-    <div id="app">
-      <div class="p-3 text-white">
-        <div class="row">
-          <div class="col-8 container">
-            <div>
-              <painel-component v-bind:max="maxNumber" />
-            </div>
-            <div>
-              <h3 class="text-warning">Últimas pedras chamadas</h3>
-              <div class="col p-3">
-                <latest-component v-bind:numbers="sequence" />
-              </div>
-            </div>
+    // Check if a new cache is available on page load.
+    window.addEventListener("load", onPageLoad, false);
+  </script>
+</head>
+
+<body class="bg-dark">
+  <div id="app">
+    <div class="text-white" style="padding: 2vmin">
+      <div class="row m-0">
+        <div class="col-8 container m-0 p-0">
+          <div>
+            <painel-component v-bind:max="maxNumber" />
           </div>
-          <div class="col-4">
-            <div class="container p-0">
-              <div class="row">
-                <div class="col-3 py-3 text-center">
-                  <p class="m-0" style="font-size: 2rem;">Pausa (s)</p>
-                  <input
-                    type="number"
-                    v-model="interval"
-                    value="1"
-                    min="1"
-                    max="50"
-                    style="font-size: 1.8rem;"
-                  />
-                </div>
-                <div class="col-9">
-                  <button
-                    type="button"
-                    class="btn btn-secondary btn-lg btn-block mb-4 py-5"
-                    v-on:click="btnStartAutomatic"
-                    :disabled="isFinished()"
-                  >
-                    <p class="m-0" style="font-size: 2rem;">{{ btnText }}</p>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-secondary btn-lg btn-block my-4 py-5"
-                    v-on:click="btnStartManual"
-                    :disabled="isFinished()"
-                  >
-                    <p class="m-0" style="font-size: 2rem;">Próxima pedra</p>
-                  </button>
-                  <div class="bg-white p-2 rounded">
-                    <h1
-                      class="text-danger text-center display-1 font-weight-bold"
-                      style="
-                        height: 22rem;
-                        font-size: 20rem;
-                        line-height: 20rem;
-                      "
-                      id="current-number"
-                    ></h1>
-                  </div>
-                  <div class="container my-4">
-                    <div class="row">
-                      <div class="col">
-                        <p class="m-0" style="font-size: 2rem;">Faltam</p>
-                      </div>
-                      <div class="col">
-                        <h1 class="text-warning text-center">
-                          {{ maxNumber - numbersIndex }}
-                        </h1>
-                      </div>
-                      <div class="col text-right">
-                        <p class="m-0" style="font-size: 2rem;">pedras</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="px-3">
-                    <div class="input-group">
-                      <input
-                        type="checkbox"
-                        aria-label="Checkbox for following text input"
-                        style="margin-top: 0.4rem; zoom: 1.4;"
-                        v-on:change="btnChangeMax"
-                      />
-                      <p
-                        class="m-0 px-2"
-                        style="font-size: 1.5rem; line-height: 2rem;"
-                      >
-                        Só 75 pedras no próximo
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div>
+            <h3 class="text-warning" style=" font-size: 3.3vmin;margin: 0 0 0 .3vmin ">Últimas pedras chamadas</h3>
+            <div class="col" style="margin-top: 2vh">
+              <latest-component v-bind:numbers="sequence" />
             </div>
           </div>
         </div>
-      </div>
-      <!-- Modal -->
-      <div
-        class="modal fade in"
-        id="loading"
-        tabindex="-1"
-        aria-labelledby="loading"
-        aria-hidden="true"
-        data-backdrop="static"
-      >
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content bg-dark">
-            <div
-              class="spinner-border text-light mt-2 mx-auto"
-              style="zoom: 3;"
-              role="status"
-            >
-              <span class="sr-only">Carregando...</span>
+        <div class="col-4">
+          <div class="row">
+            <div class="col-3 text-center" style="padding: 0 2vmin 0 2vmin">
+              <p class="m-0" style="font-size: 2.2vmin;">Pausa (s)</p>
+              <input type="number" v-model="interval" value="1" min="1" max="50" style="font-size: 1.8vmin;" />
             </div>
-            <div class="modal-header border-0">
-              <h5 class="modal-title text-light mx-auto" id="loading">
-                Baixando arquivos do jogo
-              </h5>
-            </div>
-            <div class="modal-body">
-              <div class="progress bg-dark">
-                <div
-                  id="loading-progress"
-                  class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
-                  role="progressbar"
-                  style="width: 0%; animation-direction: reverse;"
-                  aria-valuenow="0"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                >
-                  0%
+            <div class="col-9" style="width: 100%; padding: 0 0 0 .3vmin ">
+              <button type="button" class="btn btn-secondary btn-lg btn-block p-0"
+                style="height: 15vh; padding: auto; border-radius: 1vmin" v-on:click="btnStartAutomatic"
+                :disabled="isFinished()">
+                <p class="m-0" style="font-size: 4vmin;">{{ btnText }}</p>
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg btn-block p-0"
+                style="height: 15vh; padding: auto; border-radius: 1vmin; margin: 2vmin 0" v-on:click="btnStartManual"
+                :disabled="isFinished()">
+                <p class="m-0" style="font-size: 4vmin;">Próxima pedra</p>
+              </button>
+              <div class="bg-white align-middle" style="height: 27vh; border-radius: 1vmin; vertical-align: middle;">
+                <p class="text-danger text-center display-1 font-weight-bold" style="
+                        font-size: 20vmin;
+                        height: 10vh;
+                      " id="current-number"></p>
+              </div>
+              <div>
+                <div class="row"  style="margin: 0; padding: 0 2vmin">
+                  <div class="col p-0">
+                    <p class="m-0 text-left" style="font-size: 3.2vmin;">Faltam</p>
+                  </div>
+                  <div class="col p-0">
+                    <p class="text-warning text-center" style="font-size: 5vmin;">
+                      {{ maxNumber - numbersIndex }}
+                    </p>
+                  </div>
+                  <div class="col text-right p-0" >
+                    <p class="m-0" style="font-size: 3.2vmin;">pedras</p>
+                  </div>
+                </div>
+              <div style="margin: 0; padding: 0 2vmin">
+                <div class="input-group">
+                  <input type="checkbox" aria-label="Checkbox for following text input"
+                    style="margin-top: 1vmin;" v-on:change="btnChangeMax" />
+                  <p class="m-0 px-2" style="font-size: 3vmin; line-height: 3.5vmin;">
+                    Só 75 pedras no próximo
+                  </p>
                 </div>
               </div>
             </div>
@@ -186,11 +114,38 @@
         </div>
       </div>
     </div>
-    <script src="assets/js/jquery-3.4.1.slim.min.js"></script>
-    <script src="assets/js/bootstrap-4.4.1.min.js"></script>
-    <script src="assets/js/vue-2.6.11.js"></script>
-    <script src="assets/js/underscore-1.10.2.min.js"></script>
-    <script src="assets/js/async-3.2.0.min.js"></script>
-    <script src="assets/js/app-0.0.1.js"></script>
-  </body>
+    <!-- Modal -->
+    <div class="modal fade in" id="loading" tabindex="-1" aria-labelledby="loading" aria-hidden="true"
+      data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark">
+          <div class="spinner-border text-light mt-2 mx-auto" style="zoom: 3;" role="status">
+            <span class="sr-only">Carregando...</span>
+          </div>
+          <div class="modal-header border-0">
+            <h5 class="modal-title text-light mx-auto" id="loading">
+              Baixando arquivos do jogo
+            </h5>
+          </div>
+          <div class="modal-body">
+            <div class="progress bg-dark">
+              <div id="loading-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                role="progressbar" style="width: 0%; animation-direction: reverse;" aria-valuenow="0" aria-valuemin="0"
+                aria-valuemax="100">
+                0%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="assets/js/jquery-3.4.1.slim.min.js"></script>
+  <script src="assets/js/bootstrap-4.4.1.min.js"></script>
+  <script src="assets/js/vue-2.6.11.js"></script>
+  <script src="assets/js/underscore-1.10.2.min.js"></script>
+  <script src="assets/js/async-3.2.0.min.js"></script>
+  <script src="assets/js/app-0.0.1.js"></script>
+</body>
+
 </html>
